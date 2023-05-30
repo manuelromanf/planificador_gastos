@@ -1,12 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Header } from './components/Header'
 import { Modal } from './components/Modal'
 import { generarId } from './helpers'
 import IconoNuevoGasto from './img/nuevo-gasto.svg'
-
-
-
-
+import { ListadoGastos } from './components/ListadoGastos'
+import { object } from 'prop-types'
 
 
 function App() {
@@ -19,6 +17,13 @@ function App() {
 
   const [gastos, setGastos] = useState([])
 
+  const [gastoEditar, setGastoEditar] = useState({})
+
+  useEffect(() => {
+    if( Object.keys(gastoEditar).length > 0 ){
+      handelNuevoGasto()
+    }
+  }, [gastoEditar])
 
   const handelNuevoGasto = () => {
     setModal(true)
@@ -29,7 +34,8 @@ function App() {
   }
 
   const guardarGasto = gasto => {
-    gasto.id = generarId()
+    gasto.id = generarId();
+    gasto.fecha = Date.now();
     setGastos([...gastos, gasto])
 
     setAnimarModal(false)
@@ -40,8 +46,9 @@ function App() {
   }
 
   return (
-    <div> 
-      <Header 
+    <div className={modal ? 'fijar' : ''}> 
+      <Header
+      gastos={gastos}
         presupuesto={presupuesto} 
         setPresupuesto={setPresupuesto}
         isValidPresupuesto={isValidPresupuesto}
@@ -49,8 +56,12 @@ function App() {
       />
       {isValidPresupuesto && (
           <>
-
-              <main>
+              <main>  
+                <ListadoGastos
+                setGastoEditar={setGastoEditar}
+                gastoEditar={gastoEditar}
+                gastos={gastos}             
+                />
               </main>
 
               <div className='nuevo-gasto' >
