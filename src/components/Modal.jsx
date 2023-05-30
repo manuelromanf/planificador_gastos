@@ -79,7 +79,7 @@ export const Modal = ({setGastoEditar, setModal, animarModal, setAnimarModal, gu
             </div>
 
             <div className='campo' >
-                <label htmlFor="cantidad">Nombre Gasto</label>
+                <label htmlFor="cantidad">Precio del Gasto</label>
 
                 <input type="number" 
                 id="cantidad"
